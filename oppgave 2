@@ -1,0 +1,36 @@
+library(tidyverse)
+library(lubridate)
+library(zoo)
+library(data.table)
+library(cowplot)
+library(jsonlite)
+library(ggrepel)
+
+#oppgave 1
+data <- fromJSON ("https://static01.nyt.com/newsgraphics/2021/12/20/us-coronavirus-deaths-2021/ff0adde21623e111d8ce103fedecf7ffc7906264/scatter.json?fbclid=IwAR24NLi1xqAEHLRJ9pbDkB-CYpzx5NTIdfwqb5MBzZZsq_Gp_LFmmRX8-04")
+
+data %>%
+  ggplot(aes(x = fully_vaccinated_pct_of_pop, y = deaths_per_100k, label= name)) +
+  geom_point(colar ="red") +
+  geom_text_repel(aes(label = name)) +
+  labs(title = "fully_vaccinated_pct_of_pop",
+       x = "fully_vaccinated_pct_of_pop",
+       y = "deaths_per_100k")+
+  theme_bw()
+
+#oppgave 2
+library(nlme)
+lm(deaths_per_100k, fully_vaccinated_pct_of_pop, data=data)
+data %>%
+  ggplot(aes(x = fully_vaccinated_pct_of_pop, y = deaths_per_100k, label= name)) +
+  geom_point(color = "red") +
+  geom_text_repel(aes(label = name)) +
+  geom_smooth(method = lm)
+  labs(title = "fully_vaccinated_pct_of_pop",x = "fully_vaccinated_pct_of_pop",
+       y = "deaths_per_100k")+
+  theme_bw()
+  
+#grafen viser at de sammenheng mellom antall døde og antall som er vaksinert. 
+  #jo flere som er vaksinerte jo mindre er det som dør av covid 19. 
+  
+  
