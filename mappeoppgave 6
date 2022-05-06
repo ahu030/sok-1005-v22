@@ -1,0 +1,85 @@
+import pandas as pd
+import numpy as np
+players = pd.read_csv("https://footystats.org/c-dl.php?type=players&comp=1625", index_col=0)#reading data
+players
+
+from matplotlib import pyplot as plt
+
+fig,ax=plt.subplots()
+
+ax.set_ylabel('Minutter spilt borte')
+ax.set_xlabel('Minutter spilt hjemme')
+
+ax.scatter(players['minutes_played_home'], players['minutes_played_away'],  label='Observasjoner')
+ax.legend(loc='lower right',frameon=False)
+
+from matplotlib import pyplot as plt
+
+fig,ax=plt.subplots()
+
+ax.set_ylabel('Minutter spilt borte')
+ax.set_xlabel('Minutter spilt hjemme')
+
+ax.scatter(players['minutes_played_home'], players['minutes_played_away'],  label='Observasjoner')
+ax.legend(loc='lower right',frameon=False)
+
+
+players['size']=players['minutes_played_overall'].apply(lambda pop: pop**0.5/1)
+players[players['Current Club']=='Manchester City']
+
+'{:,}'.format(int(23153161365)).replace(',',' ')
+
+from bokeh.plotting import figure
+
+#creating figure:
+plot = figure(
+        title = "Premier League spillere 2018/19", 
+        x_axis_label = 'Minutter spilt hjemme',
+        y_axis_label = 'Minutter spilt borte',
+    
+
+        tools="hover", 
+        tooltips = [
+            ("Spiller","@full_name"),
+            ("Minutter hjemme","@minutes_played_home"),
+            ("Minutter borte","@minutes_played_away"),
+            ("Minutter totalt","@minutes_played_overall")
+            ],
+    
+        plot_height = 720,
+        plot_width = 1280)
+        
+        
+        
+from bokeh.io import show, output_notebook
+from bokeh.plotting import output_file
+
+plot.scatter(
+    source=players,
+    x= 'minutes_played_home', 
+    y= 'minutes_played_away',
+    
+    size='size', 
+    color= 'colors',
+    legend_field='Current Club',
+    alpha= 1
+    )
+
+#Creating the graph and saving as html
+output_notebook()
+output_file("pl-players.html")
+show(plot) 
+
+
+In [1]:
+#formatting:
+plot.legend.location = "top_left"
+
+plot.legend[0].border_line_alpha=0
+plot.outline_line_alpha=0
+plot.grid[0].grid_line_alpha=0
+plot.grid[1].grid_line_alpha=0
+
+output_notebook()
+output_file("pl-players.html")
+show(plot)
